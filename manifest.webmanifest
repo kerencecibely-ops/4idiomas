@@ -78,5 +78,43 @@
         }
       ]
     }
+  ],
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "screenshots/hoy.png",
+      "sizes": "540x1170",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tu día: meta, racha y siguiente lección"
+    },
+    {
+      "src": "screenshots/ruta.png",
+      "sizes": "540x1170",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Ruta de lecciones estilo juego"
+    },
+    {
+      "src": "screenshots/comparar.png",
+      "sizes": "540x1170",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Compara palabras en 5 idiomas"
+    },
+    {
+      "src": "screenshots/gramatica.png",
+      "sizes": "540x1170",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Reglas de gramática comparadas"
+    },
+    {
+      "src": "screenshots/escritorio.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Comparar en escritorio"
+    }
   ]
 }

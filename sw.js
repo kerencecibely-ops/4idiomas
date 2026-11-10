@@ -4,7 +4,7 @@
    - Íconos y manifiesto: primero la caché.
    - No toca peticiones a otros dominios (Firebase va directo a la red).
    Si cambias ESTE archivo, sube el número de versión. */
-const CACHE = 'cuatro-lenguas-v3';
+const CACHE = 'cuatro-lenguas-v4';
 const BASE = ['./', './index.html', './manifest.webmanifest', './icons/icon-32.png', './icons/icon-192.png',
   './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png'];
 

@@ -9,6 +9,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="4 Lenguas">
 <meta name="theme-color" content="#0e0f11" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Cuatro Lenguas</title>
 <style>
 /* =====================================================================
@@ -269,6 +272,14 @@ button.grande{padding:.85em 1.6em;font-size:1rem;font-weight:700;border-radius:1
 .regla .ejr{display:flex;align-items:center;gap:8px;justify-content:space-between;color:var(--mut);font-style:italic}
 .regla .ejr button{padding:.2em .5em;font-style:normal}
 .tconj th{font-size:.8rem;color:var(--mut);font-weight:600}.tconj td{white-space:nowrap}
+
+#bInstalar{color:var(--ink);position:fixed;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:60;display:flex;gap:12px;align-items:center;
+ background:var(--card,#fff);border:1px solid var(--line);border-radius:18px;padding:12px 12px 12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.18);animation:subeB .35s ease}
+#bInstalar img{width:42px;height:42px;border-radius:11px;flex:none}
+#bInstalar>span{flex:1;font-size:.86rem;line-height:1.3}#bInstalar>span span{opacity:.75}
+#bInstalar .x{background:none;border:0;font-size:1rem;padding:6px;opacity:.6;box-shadow:none}
+@media(min-width:900px){#bInstalar{left:auto;right:20px;bottom:20px;max-width:420px}}
+@keyframes subeB{from{transform:translateY(20px);opacity:0}}
 </style>
 </head>
 <body>
@@ -4146,13 +4157,25 @@ const esPWAweb=/^https?:$/.test(location.protocol)&&!esNativo()&&!/Electron/.tes
 const instalada=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 const esIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if(esPWAweb){
-  for(const[rel,href,sizes]of[['manifest','manifest.webmanifest'],['icon','icons/icon-32.png','32x32'],['apple-touch-icon','icons/apple-touch-icon.png']]){
-    const l=document.createElement('link');l.rel=rel;l.href=href;if(sizes)l.sizes=sizes;document.head.append(l);
-  }
   if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
-  addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptInstalar=e;if(vista==='hoy'||vista==='datos')pintar()});
-  addEventListener('appinstalled',()=>{promptInstalar=null;toast('Cuatro Lenguas quedó instalada');if(vista==='hoy'||vista==='datos')pintar()});
+  addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptInstalar=e;bannerInstalar();if(vista==='hoy'||vista==='datos')pintar()});
+  addEventListener('appinstalled',()=>{promptInstalar=null;bannerInstalar();toast('Cuatro Lenguas quedó instalada');if(vista==='hoy'||vista==='datos')pintar()});
 }
+/** Aviso flotante de instalación (todas las vistas). Se puede cerrar; vuelve a los 3 días. */
+const esAndroid=/Android/i.test(navigator.userAgent);
+function bannerInstalar(){
+  let b=document.getElementById('bInstalar');
+  let cerrado=0;try{cerrado=+localStorage.getItem('cl.instalarCerrado')||0}catch(e){}
+  const mostrar=esPWAweb&&!instalada()&&Date.now()-cerrado>3*864e5&&(promptInstalar||esIOS||esAndroid);
+  if(!mostrar){if(b)b.remove();return}
+  if(!b){b=document.createElement('div');b.id='bInstalar';document.body.append(b)}
+  const txt=promptInstalar?'Tenla en tu pantalla de inicio: abre sin internet y en pantalla completa.'
+    :esIOS?'En Safari toca <b>Compartir</b> ⬆️ y luego <b>Agregar a pantalla de inicio</b>.'
+    :'Abre el menú <b>⋮</b> de Chrome y toca <b>Instalar app</b> (o «Agregar a pantalla principal»).';
+  b.innerHTML=`<img src="icons/icon-192.png" alt=""><span><b>Instala Cuatro Lenguas</b><br><span>${txt}</span></span>
+    ${promptInstalar?'<button class="pri" data-act="pwaInstalar">Instalar</button>':''}<button class="x" data-act="pwaCerrar" aria-label="Cerrar">✕</button>`;
+}
+if(esPWAweb){addEventListener('load',()=>setTimeout(bannerInstalar,esAndroid?3500:800))}
 /** Bloque «Instalar» para Hoy y Datos. */
 function instalarHTML(enHoy){
   if(!esPWAweb||instalada())return enHoy?'':`<p class="mut peq">${esPWAweb?'La app ya está instalada en este dispositivo.':'Para instalarla como app, ábrela desde su dirección web (https). Las versiones Android y Windows ya son apps.'}</p>`;
@@ -4163,7 +4186,8 @@ function instalarHTML(enHoy){
   return enHoy?'':`<p class="mut peq">Si tu navegador lo permite, verás la opción «Instalar app» en su menú.</p>`;
 }
 Object.assign(A,{
-  async pwaInstalar(){if(!promptInstalar)return;promptInstalar.prompt();try{await promptInstalar.userChoice}catch(e){}promptInstalar=null;pintar()}
+  async pwaInstalar(){if(!promptInstalar)return;promptInstalar.prompt();try{await promptInstalar.userChoice}catch(e){}promptInstalar=null;bannerInstalar();pintar()},
+  pwaCerrar(){try{localStorage.setItem('cl.instalarCerrado',Date.now())}catch(e){}bannerInstalar()}
 });
 /** Accesos directos del ícono (manifest «shortcuts»): ?accion=sesion | diario | historias */
 function accionInicial(){
