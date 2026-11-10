@@ -1,0 +1,82 @@
+{
+  "name": "Cuatro Lenguas",
+  "short_name": "4 Lenguas",
+  "description": "Estudia inglés, francés, alemán y japonés comparándolos con el español, lado a lado.",
+  "lang": "es",
+  "id": "./",
+  "start_url": "./?fuente=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f6f6f3",
+  "theme_color": "#f6f6f3",
+  "categories": [
+    "education"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Continuar lección",
+      "short_name": "Lección",
+      "url": "./?accion=leccion",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Sesión del día",
+      "short_name": "Sesión",
+      "url": "./?accion=sesion",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Gramática",
+      "short_name": "Gramática",
+      "url": "./?accion=gramatica",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Escribir en el diario",
+      "short_name": "Diario",
+      "url": "./?accion=diario",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
